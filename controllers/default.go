@@ -52,9 +52,28 @@ func (c *MainController) Get() {
 //}
 
 //编写一个post方法
+//func (c *MainController) Post() {
+////	//1.解析JSON数据
+////	var person models.Person
+////	dataBytes , err := ioutil.ReadAll(c.Ctx.Request.Body)
+////	if err != nil {
+////		c.Ctx.WriteString("数据接收错误")
+////		return
+////	}
+////	err = json.Unmarshal(dataBytes,&person)
+////	if err != nil {
+////		c.Ctx.WriteString("数据解析错误")
+////		return
+////	}
+////	fmt.Println("姓名：",person.Name)
+////	fmt.Println("年龄：",person.Age)
+////	fmt.Println("性别：",person.Sex)
+////	c.Ctx.WriteString("数据解析成功")
+////}
+//编写一个post方法
 func (c *MainController) Post() {
 	//1.解析JSON数据
-	var person models.Person
+	var person models.Personer
 	dataBytes , err := ioutil.ReadAll(c.Ctx.Request.Body)
 	if err != nil {
 		c.Ctx.WriteString("数据接收错误")
@@ -66,7 +85,8 @@ func (c *MainController) Post() {
 		return
 	}
 	fmt.Println("姓名：",person.Name)
-	fmt.Println("年龄：",person.Age)
-	fmt.Println("性别：",person.Sex)
+	fmt.Println("生日：",person.Birthday)
+	fmt.Println("住址：",person.Address)
+	fmt.Println("昵称：",person.Nick)
 	c.Ctx.WriteString("数据解析成功")
 }
