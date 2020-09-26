@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"beego02/db_mysql"
 	"beego02/models"
 	"encoding/json"
 	"fmt"
@@ -45,48 +46,63 @@ func (c *MainController) Get() {
 //	c.Ctx.WriteString("数据校验成功")
 //}
 //
-////编写一个Delete方法
-//func (c *MainController) Delete() {
-//	//1.接收Delete请求的参数
-//
-//}
 
-//编写一个post方法
-//func (c *MainController) Post() {
-////	//1.解析JSON数据
-////	var person models.Person
-////	dataBytes , err := ioutil.ReadAll(c.Ctx.Request.Body)
-////	if err != nil {
-////		c.Ctx.WriteString("数据接收错误")
-////		return
-////	}
-////	err = json.Unmarshal(dataBytes,&person)
-////	if err != nil {
-////		c.Ctx.WriteString("数据解析错误")
-////		return
-////	}
-////	fmt.Println("姓名：",person.Name)
-////	fmt.Println("年龄：",person.Age)
-////	fmt.Println("性别：",person.Sex)
-////	c.Ctx.WriteString("数据解析成功")
-////}
+
 //编写一个post方法
 func (c *MainController) Post() {
 	//1.解析JSON数据
-	var person models.Personer
+	var user models.User
 	dataBytes , err := ioutil.ReadAll(c.Ctx.Request.Body)
 	if err != nil {
 		c.Ctx.WriteString("数据接收错误")
 		return
 	}
-	err = json.Unmarshal(dataBytes,&person)
+	err = json.Unmarshal(dataBytes,&user)
 	if err != nil {
 		c.Ctx.WriteString("数据解析错误")
 		return
 	}
-	fmt.Println("姓名：",person.Name)
-	fmt.Println("生日：",person.Birthday)
-	fmt.Println("住址：",person.Address)
-	fmt.Println("昵称：",person.Nick)
-	c.Ctx.WriteString("数据解析成功")
+
+	id, err := db_mysql.InsertUser(user)
+	if err != nil {
+		c.Ctx.WriteString("用户保存失败")
+		return
+	}
+	fmt.Println(id)
+
+	result := models.ResponseResult{
+		Code:    0,
+		Message: "保存成功",
+		Data:    nil,
+	}
+	c.Data["json"] = &result
+	c.ServeJSON()
+	//c.Ctx.WriteString("恭喜，用户保存成功")
+
 }
+//编写一个post方法
+//func (c *MainController) Post() {
+//	//1.解析JSON数据
+//	var person models.Personer
+//	dataBytes , err := ioutil.ReadAll(c.Ctx.Request.Body)
+//	if err != nil {
+//		c.Ctx.WriteString("数据接收错误")
+//		return
+//	}
+//	err = json.Unmarshal(dataBytes,&person)
+//	if err != nil {
+//		c.Ctx.WriteString("数据解析错误")
+//		return
+//	}
+//	fmt.Println("姓名：",person.Name)
+//	fmt.Println("生日：",person.Birthday)
+//	fmt.Println("住址：",person.Address)
+//	fmt.Println("昵称：",person.Nick)
+//	c.Ctx.WriteString("数据解析成功")
+//}
+
+////编写一个Delete方法
+//func (c *MainController) Delete() {
+//	//1.接收Delete请求的参数
+//
+//}
