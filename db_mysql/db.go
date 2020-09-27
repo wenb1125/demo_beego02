@@ -41,8 +41,8 @@ func InsertUser(user models.User) (int64,error) {
 	bytes := hashMd5.Sum(nil)
 	user.Psaaword = hex.EncodeToString(bytes)
 	fmt.Println("将要保存的用户名:",user.Nick,"密码:",user.Psaaword)
-	result , err := Db.Exec("insert into user(nick, password, birthday, address) values(?,?,?,?) ",
-		user.Nick,user.Psaaword,user.Birthday,user.Address,
+	result , err := Db.Exec("insert into user(nick, password, email, birthday, address) values(?,?,?,?,?) ",
+		user.Nick,user.Psaaword,user.Email,user.Birthday,user.Address,
 	)
 	if err != nil {//保存数据时遇到错误
 		return -1 ,err

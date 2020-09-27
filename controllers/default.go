@@ -47,28 +47,33 @@ func (c *MainController) Get() {
 //}
 //
 
-
+type UserController struct {
+	beego.Controller
+}
 //编写一个post方法
-func (c *MainController) Post() {
+func (c *UserController) Post() {
 	//1.解析JSON数据
 	var user models.User
 	dataBytes , err := ioutil.ReadAll(c.Ctx.Request.Body)
 	if err != nil {
+		fmt.Println(err.Error())
 		c.Ctx.WriteString("数据接收错误")
 		return
 	}
 	err = json.Unmarshal(dataBytes,&user)
 	if err != nil {
+		fmt.Println(err.Error())
 		c.Ctx.WriteString("数据解析错误")
 		return
 	}
 
 	id, err := db_mysql.InsertUser(user)
 	if err != nil {
+		fmt.Println(err.Error())
 		c.Ctx.WriteString("用户保存失败")
 		return
 	}
-	fmt.Println(id)
+	fmt.Printf("影响了%d行\n",id)
 
 	result := models.ResponseResult{
 		Code:    0,
